@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="2" author="swasthik">
+
+        <createTable tableName="category">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="category_name" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        
+        
+        <createTable tableName="item">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="item_name" type="varchar(255)" >
+                <constraints nullable="false" />
+            </column>
+            <column name="category_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="category_id" references="category(id)" />
+            </column>
+            <column name="stock" type="bigint" defaultValue="0" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="brand" type="varchar(50)" >
+                <constraints nullable="true" unique="false" />
+            </column>
+            <column name="color" type="varchar(20)" >
+            <constraints nullable="true" unique="false" />
+        </column>
+        </createTable>
+
+        <createTable tableName="user">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="username" type="varchar(50)" >
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="password" type="varchar(60)">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="role" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable tableName="issue">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="item_id" type="bigint" >
+                <constraints nullable="false" unique="false" foreignKeyName="issue_item_id" references="item(id)" />
+            </column>
+            <column name="quantity" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="customer_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="customer_details" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="issued_by" type="bigint">
+                <constraints nullable="false" foreignKeyName="issued_by" references="user(id)"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="order">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="item_id" type="bigint" >
+                <constraints nullable="false" unique="false" foreignKeyName="order_item_id" references="item(id)" />
+            </column>
+            <column name="quantity" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="ordered_by" type="bigint">
+                <constraints nullable="false" foreignKeyName="ordered_by" references="user(id)"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
