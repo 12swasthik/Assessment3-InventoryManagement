@@ -13,28 +13,28 @@ public class ItemDAO extends AbstractDAO<Item> {
         super(sessionFactory);
     }
 
-    public Optional<Item> findById(Long id){
+    public Optional<Item> findById(Long id) {
         return Optional.ofNullable(get(id));
     }
 
 
-    public Optional<Item> findItemByName(String name){
-        return Optional.ofNullable(uniqueResult(namedTypedQuery("com.inventory.core.Item.findByName").setParameter("name",name)));
+    public List<Item> findItemByName(String itemName) {
+        return list(namedTypedQuery("com.inventory.core.Item.findByName").setParameter("name", itemName));
     }
 
-    public Item create(Item i){
-        return persist(i);
+    public Item create(Item item) {
+        return persist(item);
     }
 
-    public List<Item> getAll(){
+    public List<Item> getAll() {
         return list(namedTypedQuery("com.inventory.core.Item.findAll"));
     }
 
-    public void addStock(int quantity, long id){
-        namedTypedQuery("com.inventory.core.Item.increaseItemCount").setParameter("quantity", quantity).setParameter("id", id);
+    public void addStock(long quantity, long id) {
+        namedQuery("com.inventory.core.Item.increaseItemCount").setParameter("quantity", quantity).setParameter("id", id).executeUpdate();
     }
 
-    public void reduceStock(int quantity,long id){
-         namedTypedQuery("com.inventory.core.Item.decreseItemCount").setParameter("quantity",quantity).setParameter("id",id);
+    public void reduceStock(long quantity, long id) {
+        namedQuery("com.inventory.core.Item.decreaseItemCount").setParameter("quantity", quantity).setParameter("id", id).executeUpdate();
     }
 }

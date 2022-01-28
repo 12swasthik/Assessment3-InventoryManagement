@@ -6,41 +6,42 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 
 @Entity
-@Table(name="item")
-@NamedQuery(name="com.inventory.core.Item.findAll",query="SELECT i from Item i")
-@NamedQuery(name="com.inventory.core.Item.findByName",query="SELECT c from Item c"+" WHERE c.itemName like :name")
-@NamedQuery(name="com.inventory.core.Item.increaseItemCount",query = "update Item i set i.stock = i.stock + :quantity where i.id = :id")
-@NamedQuery(name="com.inventory.core.Item.decreaseItemCount",query = "update Item i set i.stock = i.stock - :quantity where i.id = :id")
+@Table(name = "item")
+@NamedQuery(name = "com.inventory.core.Item.findAll", query = "SELECT i from Item i")
+@NamedQuery(name = "com.inventory.core.Item.findByName", query = "SELECT i from Item i" + " WHERE i.itemName like :name")
+@NamedQuery(name = "com.inventory.core.Item.increaseItemCount", query = "update Item i set i.stock = i.stock + :quantity where i.id = :id")
+@NamedQuery(name = "com.inventory.core.Item.decreaseItemCount", query = "update Item i set i.stock = i.stock - :quantity where i.id = :id")
 public class Item {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name="item_name",nullable = false)
+    @Column(name = "item_name", nullable = false)
     private String itemName;
 
-    @Column(name="category_id",nullable=false)
+    @Column(name = "category_id", nullable = false)
     private long categoryId;
 
-    @Column(name="brand")
+    @Column(name = "brand")
     private String brand;
 
-    @Column(name="color")
+    @Column(name = "color")
     private String color;
 
-    @Column(name="stock")
+    @Column(name = "stock")
     private long stock;
 
-    public Item(){}
+    public Item() {
+    }
 
     @JsonCreator
-    public Item(@JsonProperty("itemName") String itemName,@JsonProperty("categoryId") long categoryId,@JsonProperty("brand") String brand,@JsonProperty("color") String color) {
+    public Item(@JsonProperty("itemName") String itemName, @JsonProperty("categoryId") long categoryId, @JsonProperty("brand") String brand, @JsonProperty("color") String color) {
         this.itemName = itemName;
         this.categoryId = categoryId;
         this.brand = brand;
         this.color = color;
-        stock = 0;
+        this.stock = 0;
     }
 
     public void setId(long id) {

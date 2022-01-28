@@ -60,7 +60,7 @@
             </column>
         </createTable>
 
-        <createTable tableName="issue">
+        <createTable tableName="sale">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
             </column>
@@ -79,12 +79,12 @@
             <column name="customer_details" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="issued_by" type="bigint">
-                <constraints nullable="false" foreignKeyName="issued_by" references="user(id)"/>
+            <column name="sold_by" type="bigint">
+                <constraints nullable="false" foreignKeyName="sold_by" references="user(id)"/>
             </column>
         </createTable>
 
-        <createTable tableName="order">
+        <createTable tableName="purchase">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
             </column>
@@ -97,8 +97,8 @@
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false" />
             </column>
-            <column name="ordered_by" type="bigint">
-                <constraints nullable="false" foreignKeyName="ordered_by" references="user(id)"/>
+            <column name="purchased_by" type="bigint">
+                <constraints nullable="false" foreignKeyName="purchased_by" references="user(id)"/>
             </column>
 
         </createTable>

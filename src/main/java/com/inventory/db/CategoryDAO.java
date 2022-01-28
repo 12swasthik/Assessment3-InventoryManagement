@@ -13,20 +13,20 @@ public class CategoryDAO extends AbstractDAO<Category> {
         super(sessionFactory);
     }
 
-    public Optional<Category> findById(Long id){
+    public Optional<Category> findById(Long id) {
         return Optional.ofNullable(get(id));
     }
 
 
-    public Optional<Category> findByCategoryName(String name){
-        return Optional.ofNullable(uniqueResult(namedTypedQuery("com.inventory.core.Category.findByName").setParameter("name",name)));
+    public List<Category> findByCategoryName(String categoryName) {
+        return list(namedTypedQuery("com.inventory.core.Category.findByName").setParameter("name", categoryName));
     }
 
-    public Category create(Category c){
-        return persist(c);
+    public Category create(Category category) {
+        return persist(category);
     }
 
-    public List<Category> getAll(){
+    public List<Category> getAll() {
         return list(namedTypedQuery("com.inventory.core.Category.findAll"));
     }
 }

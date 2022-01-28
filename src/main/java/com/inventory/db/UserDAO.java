@@ -14,14 +14,15 @@ public class UserDAO extends AbstractDAO<User> {
         super(sessionFactory);
     }
 
-    public Optional<User> findUserByUsername(String username){
-        return Optional.ofNullable(uniqueResult(namedTypedQuery("com.inventory.core.User.findByUsername").setParameter("name",username)));
-    }
-    public User create(User i){
-        return persist(i);
+    public Optional<User> findUserByUsername(String username) {
+        return Optional.ofNullable(uniqueResult(namedTypedQuery("com.inventory.core.User.findByUsername").setParameter("name", username)));
     }
 
-    public List<User> getAll(){
-       return list(namedTypedQuery("com.inventory.core.User.findAll"));
+    public User create(User user) {
+        return persist(user);
+    }
+
+    public List<User> getAll() {
+        return list(namedTypedQuery("com.inventory.core.User.findAll"));
     }
 }

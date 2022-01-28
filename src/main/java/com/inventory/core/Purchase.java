@@ -8,32 +8,33 @@ import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 
 @Entity
-@Table(name="order")
-@NamedQuery(name="com.inventory.core.Order.findAll",query="SELECT c from Order c")
-public class Order {
+@Table(name = "purchase")
+@NamedQuery(name = "com.inventory.core.Purchase.findAll", query = "SELECT p from Purchase p")
+public class Purchase {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name="item_id",nullable = false)
+    @Column(name = "item_id", nullable = false)
     private long itemId;
 
-    @Column(name="quantity",nullable = false)
+    @Column(name = "quantity", nullable = false)
     private int quantity;
 
     @GeneratedValue
-    @Column(name="created_at")
+    @Column(name = "created_at")
     private Timestamp createdAt;
 
 
-    @Column(name="ordered_by",nullable = false)
-    private long orderedBy;
+    @Column(name = "purchased_by")
+    private long purchasedBy;
 
-    public Order(){}
+    public Purchase() {
+    }
 
     @JsonCreator
-    public Order(@JsonProperty("itemId") long itemId, @JsonProperty("quantity") int quantity){
+    public Purchase(@JsonProperty("itemId") long itemId, @JsonProperty("quantity") int quantity) {
         this.itemId = itemId;
         this.quantity = quantity;
         this.createdAt = Timestamp.from(ZonedDateTime.now().toInstant());
@@ -71,11 +72,11 @@ public class Order {
         this.createdAt = createdAt;
     }
 
-    public long getOrderedBy() {
-        return orderedBy;
+    public long getPurchaseBy() {
+        return purchasedBy;
     }
 
-    public void setOrderedBy(long orderedBy) {
-        this.orderedBy = orderedBy;
+    public void setPurchasedBy(long purchasedBy) {
+        this.purchasedBy = purchasedBy;
     }
 }

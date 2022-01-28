@@ -25,7 +25,7 @@ public class InventoryApplication extends Application<InventoryConfiguration> {
     }
 
     private final HibernateBundle<InventoryConfiguration> hibernateBundle
-            = new HibernateBundle<InventoryConfiguration>(User.class, Category.class, Issue.class, Item.class, Order.class
+            = new HibernateBundle<InventoryConfiguration>(User.class, Category.class, Sale.class, Item.class, Purchase.class
     ) {
         @Override
         public PooledDataSourceFactory getDataSourceFactory(InventoryConfiguration inventoryConfiguration) {
@@ -42,27 +42,28 @@ public class InventoryApplication extends Application<InventoryConfiguration> {
 
 
     @Override
-    public void initialize(Bootstrap<InventoryConfiguration> bootstrap){
+    public void initialize(Bootstrap<InventoryConfiguration> bootstrap) {
         bootstrap.addBundle(hibernateBundle);
         bootstrap.addBundle(migrationsBundle);
     }
+
     @Override
     public void run(InventoryConfiguration configuration, Environment environment) {
         final CategoryDAO categoryDao = new CategoryDAO(hibernateBundle.getSessionFactory());
         final ItemDAO itemDao = new ItemDAO(hibernateBundle.getSessionFactory());
         final UserDAO userDao = new UserDAO(hibernateBundle.getSessionFactory());
-        final IssueDAO issueDao = new IssueDAO(hibernateBundle.getSessionFactory());
-        final OrderDAO orderDao = new OrderDAO(hibernateBundle.getSessionFactory());
+        final SaleDAO saleDao = new SaleDAO(hibernateBundle.getSessionFactory());
+        final PurchaseDAO purchaseDao = new PurchaseDAO(hibernateBundle.getSessionFactory());
 
 
         environment.jersey().register(itemDao);
         environment.jersey().register(categoryDao);
         environment.jersey().register(userDao);
-        environment.jersey().register(issueDao);
-        environment.jersey().register(orderDao);
+        environment.jersey().register(saleDao);
+        environment.jersey().register(purchaseDao);
 
         UnitOfWorkAwareProxyFactory factory = new UnitOfWorkAwareProxyFactory(hibernateBundle);
-        InventoryAuthenticator proxy = factory.create(InventoryAuthenticator.class, UserDAO.class,userDao);
+        InventoryAuthenticator proxy = factory.create(InventoryAuthenticator.class, UserDAO.class, userDao);
         environment.jersey().register(new AuthDynamicFeature(new BasicCredentialAuthFilter.Builder<User>()
                 .setAuthenticator(proxy)
                 .setAuthorizer(new InventoryAuthorizer())
@@ -75,7 +76,7 @@ public class InventoryApplication extends Application<InventoryConfiguration> {
         environment.jersey().register(new UserResource(userDao));
         environment.jersey().register(new ItemResource(itemDao));
         environment.jersey().register(new CategoryResource(categoryDao));
-        environment.jersey().register(new IssueResource(issueDao,itemDao));
-        environment.jersey().register(new OrderResource(orderDao,itemDao));
+        environment.jersey().register(new SalesResource(saleDao, itemDao, userDao));
+        environment.jersey().register(new PurchaseResource(purchaseDao, itemDao, userDao));
     }
 }

@@ -14,12 +14,12 @@ public class InventoryConfiguration extends Configuration {
     private DataSourceFactory dataFactory = new DataSourceFactory();
 
     @JsonProperty("database")
-    public void setDataFactory(DataSourceFactory db){
+    public void setDataFactory(DataSourceFactory db) {
         this.dataFactory = db;
     }
 
     @JsonProperty("database")
-    public DataSourceFactory getDataFactory(){
+    public DataSourceFactory getDataFactory() {
         return this.dataFactory;
     }
 }

@@ -9,37 +9,38 @@ import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 
 @Entity
-@Table(name="issue")
-@NamedQuery(name="com.inventory.core.Issue.findAll",query="SELECT c from Issue c")
-public class Issue {
+@Table(name = "sale")
+@NamedQuery(name = "com.inventory.core.Sale.findAll", query = "SELECT s from Sale s")
+public class Sale {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name="item_id",nullable = false)
+    @Column(name = "item_id", nullable = false)
     private long itemId;
 
-    @Column(name="quantity",nullable = false)
+    @Column(name = "quantity", nullable = false)
     private int quantity;
 
     @GeneratedValue
-    @Column(name="created_at")
+    @Column(name = "created_at")
     private Timestamp createdAt;
 
-    @Column(name="customer_name", nullable=false)
+    @Column(name = "customer_name", nullable = false)
     private String customerName;
 
-    @Column(name="customer_details")
+    @Column(name = "customer_details")
     private String customerDetails;
 
-    @Column(name="issued_by",nullable = false)
-    private long issuedBy;
+    @Column(name = "sold_by", nullable = false)
+    private long soldBy;
 
-    public Issue(){}
+    public Sale() {
+    }
 
     @JsonCreator
-    public Issue(@JsonProperty("itemId") long itemId,@JsonProperty("quantity") int quantity,@JsonProperty("customerName") String customerName,@JsonProperty("customerDetails") String customerDetails){
+    public Sale(@JsonProperty("itemId") long itemId, @JsonProperty("quantity") int quantity, @JsonProperty("customerName") String customerName, @JsonProperty("customerDetails") String customerDetails) {
         this.itemId = itemId;
         this.quantity = quantity;
         this.customerName = customerName;
@@ -95,12 +96,12 @@ public class Issue {
         this.customerDetails = customerDetails;
     }
 
-    public long getIssuedBy() {
-        return issuedBy;
+    public long getSoldBy() {
+        return soldBy;
     }
 
-    public void setIssuedBy(long issuedBy) {
-        this.issuedBy = issuedBy;
+    public void setSoldBy(long soldBy) {
+        this.soldBy = soldBy;
     }
 
 }
